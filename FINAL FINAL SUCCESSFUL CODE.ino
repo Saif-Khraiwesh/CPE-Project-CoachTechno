@@ -1,15 +1,12 @@
-
-
-
 #include <M5Core2.h>
 
+//initializing variables
+
 const int refresh = 3000; //read every 3 seconds
-
 double SH, SW; //screenheight and screenwidth
-
-double gender; //gender
-double age; //age
-double weight; //weight
+double gender; //gender value
+double age; //age value
+double weight; //weight value
 
 unsigned int unit = 3;
 //              0 = C (celsius)
@@ -19,8 +16,11 @@ unsigned int unit = 3;
 //              4 = F and Humidity
 //              5 = C and F
 
-char *title[] = {"Temperature", "Temperature" ,"Humidity"};
-char *unitText[] = {"C", "F", "%"};
+char *title[] = {"Temperature", "Temperature" ,"Humidity"}; //titles
+char *unitText[] = {"C", "F", "%"}; //units
+
+
+//background and color setups
 
 unsigned int backgroundColor = BLUE;
 
@@ -40,13 +40,17 @@ uint8_t line1ValueY = 40;
 uint8_t line2TitleY = 110;
 uint8_t line2ValueY = 150;
 
-bool t = true;
-bool s1 = true;
-bool s2 = false;
-bool s3 = false;
-bool s4 = false;
-bool s5 = false;
-bool s6 = false;
+//initializing flags
+
+bool t = true; //detect touch button press
+bool s1 = true; //flag for screen 1
+bool s2 = false; //flag for screen 2
+bool s3 = false; //flag for screen 3
+bool s4 = false; //flag for screen 4
+bool s5 = false; //flag for screen 5
+bool s6 = false; //flag for screen 6
+
+//DHT Sensor library and global variables
 
 #include "DHT.h"
 #define DHTPIN 27 
@@ -58,6 +62,8 @@ float temperatureCValue, temperatureFValue, humidityValue, myValue1, myValue2;
 void readTemperature();
 void displayTemperature(uint8_t line);
 
+
+//setup runs once
 void setup() {
 
   M5.begin();
@@ -160,18 +166,15 @@ void displayTemperature(uint8_t line, bool degree)
 {
   uint8_t Y_lineTitle,Y_lineValue;
   float valueToDisplay;
-  //M5.Lcd.fillScreen(backgroundColor);
   M5.Lcd.setTextColor(temperatureTitleColor);  
  
   M5.Lcd.setTextSize(4);
   if(line ==1){
     Y_lineTitle =line1TitleY;
     Y_lineValue =line1ValueY;
-    valueToDisplay=myValue1;
-    //M5.Lcd.fillRect(0, 0, 340, line2TitleY, backgroundColor);            
+    valueToDisplay=myValue1;     
    M5.Lcd.fillScreen(backgroundColor);     
   }else{
-    //M5.Lcd.drawRect(0, line2TitleY, 340, 240-line2TitleY, background2Color);
     M5.Lcd.fillRect(0, line2TitleY, 340, 240-line2TitleY, background2Color);      
     Y_lineTitle =line2TitleY;
     Y_lineValue =line2ValueY; 
@@ -211,7 +214,6 @@ void displayHumidity()
 //print degree
 void printDegree()
 {
-
   M5.Lcd.setTextSize(3);  
   
   M5.Lcd.print("o");  
@@ -234,7 +236,7 @@ void printOnSerial()
 bool isTouched(float x, float y, float r){
 
 TouchPoint_t coordinate = M5.Touch.getPressPoint();
-float d = sqrt(pow((x-(coordinate.x)),2) + pow((y-(coordinate.y)),2));
+float d = sqrt(pow((x-(coordinate.x)),2) + pow((y-(coordinate.y)),2)); //distance between touch and circle center
 
 if (coordinate.x < 0 || coordinate.y < 0){
   t = true;
